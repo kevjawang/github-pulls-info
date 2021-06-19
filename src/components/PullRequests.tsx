@@ -1,68 +1,63 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import Card from "./Card";
 import { IPullRequest } from "../types/GithubPulls";
-import { getPull } from "../utils/queries";
+import { getPulls } from "../utils/queries";
+import { VStack } from "@chakra-ui/react";
 import ErrorBox from "./ErrorBox";
 import Loading from "./Loading";
 
-interface CardProps {
+interface PullRequestsProps {
   url: string;
 }
 
 interface IState {
   loading: boolean;
   error: boolean;
-  pullRequest: IPullRequest;
+  pullRequests: IPullRequest[];
 }
 
 const defaultState = {
   loading: true,
   error: false,
-  pullRequest: {},
+  pullRequests: [],
 };
 
-export const Card = (props: CardProps) => {
+const PullRequests = (props: PullRequestsProps) => {
   const [state, setState] = useState<IState>(defaultState);
 
   useEffect(() => {
-    getPull(props.url)
+    getPulls(props.url)
       .then((response) => {
         setState({
           loading: false,
           error: false,
-          pullRequest: response.data,
+          pullRequests: response.data,
         });
       })
       .catch(() => {
         setState({
           loading: false,
           error: true,
-          pullRequest: {},
+          pullRequests: [],
         });
       });
   }, []);
 
   if (state.error) {
-    return (
-      <ErrorBox />
-    )
+    return <ErrorBox />;
   }
 
   if (state.loading) {
-    return (
-      <Loading />
-    )
+    return <Loading />;
   }
 
   return (
-    <Box>
-      <Flex flexDirection="column">
-        <Text>{state.pullRequest.title}</Text>
-        <Text>Commits: {state.pullRequest.commits}</Text>
-        <Text>Comments: {state.pullRequest.comments} </Text>
-      </Flex>
-    </Box>
+    <VStack>
+      {state.pullRequests.map((pullRequest) => {
+        pullRequest.url && <Card url={pullRequest.url} />;
+      })}
+    </VStack>
   );
 };
 
-export default Card;
+export default PullRequests;
