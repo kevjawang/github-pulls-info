@@ -1,11 +1,11 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { IPullRequest } from "../types/GithubPulls";
+import { Box, Flex, Link } from "@chakra-ui/react";
+import { IPullRequest } from "../types/GithubPull";
 import { getPull } from "../utils/rest";
 import ErrorBox from "./ErrorBox";
 import Loading from "./Loading";
 
-interface CardProps {
+interface PullRequestCardProps {
   url: string;
 }
 
@@ -21,7 +21,7 @@ const defaultState = {
   pullRequest: {},
 };
 
-export const Card = (props: CardProps) => {
+export const PullRequestCard = (props: PullRequestCardProps) => {
   const [state, setState] = useState<IState>(defaultState);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Card = (props: CardProps) => {
           pullRequest: {},
         });
       });
-  }, []);
+  }, [props.url]);
 
   if (state.error) {
     return <ErrorBox />;
@@ -51,14 +51,25 @@ export const Card = (props: CardProps) => {
   }
 
   return (
-    <Box borderRadius="lg" borderWidth="1px" margin="4px">
-      <Flex flexDirection="column">
-        <Text>{state.pullRequest.title}</Text>
-        <Text>Commits: {state.pullRequest.commits}</Text>
-        <Text>Comments: {state.pullRequest.comments} </Text>
+    <Box borderRadius="lg" borderWidth="1px" margin="4px" maxWidth="400px">
+      <Flex flexDirection="column" padding="2px">
+        <Box fontWeight="semibold">
+          {state.pullRequest.title}{" "}
+          <Link href={state.pullRequest.html_url} isExternal>
+            ({state.pullRequest.number})
+          </Link>
+        </Box>
+        <Box>Commits: {state.pullRequest.commits}</Box>
+        <Box>Comments: {state.pullRequest.comments}</Box>
+        <Box>
+          {"Opened by "}
+          <Link href={state.pullRequest.user?.html_url} isExternal>
+            {state.pullRequest.user?.login}
+          </Link>
+        </Box>
       </Flex>
     </Box>
   );
 };
 
-export default Card;
+export default PullRequestCard;

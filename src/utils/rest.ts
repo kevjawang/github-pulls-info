@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IPullRequest } from "../types/GithubPulls";
+import { IPullRequest } from "../types/GithubPull";
 import { repoRegex, pullAPIRegex } from "./regex";
 
 export const getPulls = (url: string, page: number) => {

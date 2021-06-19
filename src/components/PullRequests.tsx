@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Card from "./Card";
-import { IPullRequest } from "../types/GithubPulls";
+import PullRequestCard from "./PullRequestCard";
+import { IPullRequest } from "../types/GithubPull";
 import { getPulls } from "../utils/rest";
 import { Button, SimpleGrid } from "@chakra-ui/react";
 import ErrorBox from "./ErrorBox";
@@ -41,7 +41,7 @@ const PullRequests = (props: PullRequestsProps) => {
           pullRequests: response.data,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         setState({
           loading: false,
           error: true,
@@ -62,7 +62,9 @@ const PullRequests = (props: PullRequestsProps) => {
     <>
       <SimpleGrid spacing="4px" minChildWidth="400px">
         {state.pullRequests.map((pullRequest) => (
-          <>{pullRequest.url && <Card url={pullRequest.url} />}</>
+          <Box key={pullRequest.number}>
+            {pullRequest.url && <PullRequestCard url={pullRequest.url} />}
+          </Box>
         ))}
       </SimpleGrid>
       <Box>
