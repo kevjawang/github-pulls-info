@@ -29,6 +29,10 @@ const PullRequests = (props: PullRequestsProps) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
+    setPage(1);
+  }, [props.url]);
+
+  useEffect(() => {
     getPulls(props.url, page)
       .then((response) => {
         setState({
