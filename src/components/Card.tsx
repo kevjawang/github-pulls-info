@@ -1,7 +1,7 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { IPullRequest } from "../types/GithubPulls";
-import { getPull } from "../utils/queries";
+import { getPull } from "../utils/rest";
 import ErrorBox from "./ErrorBox";
 import Loading from "./Loading";
 
@@ -43,19 +43,15 @@ export const Card = (props: CardProps) => {
   }, []);
 
   if (state.error) {
-    return (
-      <ErrorBox />
-    )
+    return <ErrorBox />;
   }
 
   if (state.loading) {
-    return (
-      <Loading />
-    )
+    return <Loading />;
   }
 
   return (
-    <Box>
+    <Box borderRadius="lg" borderWidth="1px" margin="4px">
       <Flex flexDirection="column">
         <Text>{state.pullRequest.title}</Text>
         <Text>Commits: {state.pullRequest.commits}</Text>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { IPullRequest } from "../types/GithubPulls";
-import { getPulls } from "../utils/queries";
-import { VStack } from "@chakra-ui/react";
+import { getPulls } from "../utils/rest";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 import ErrorBox from "./ErrorBox";
 import Loading from "./Loading";
+
+import { Box } from "@chakra-ui/react";
 
 interface PullRequestsProps {
   url: string;
@@ -24,9 +26,10 @@ const defaultState = {
 
 const PullRequests = (props: PullRequestsProps) => {
   const [state, setState] = useState<IState>(defaultState);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    getPulls(props.url)
+    getPulls(props.url, page)
       .then((response) => {
         setState({
           loading: false,
@@ -34,14 +37,14 @@ const PullRequests = (props: PullRequestsProps) => {
           pullRequests: response.data,
         });
       })
-      .catch(() => {
+      .catch((err) => {
         setState({
           loading: false,
           error: true,
           pullRequests: [],
         });
       });
-  }, []);
+  }, [props.url, page]);
 
   if (state.error) {
     return <ErrorBox />;
@@ -52,11 +55,19 @@ const PullRequests = (props: PullRequestsProps) => {
   }
 
   return (
-    <VStack>
-      {state.pullRequests.map((pullRequest) => {
-        pullRequest.url && <Card url={pullRequest.url} />;
-      })}
-    </VStack>
+    <>
+      <SimpleGrid spacing="4px" minChildWidth="400px">
+        {state.pullRequests.map((pullRequest) => (
+          <>{pullRequest.url && <Card url={pullRequest.url} />}</>
+        ))}
+      </SimpleGrid>
+      <Box>
+        {page > 1 && <Button onClick={() => setPage(page - 1)}>Prev</Button>}
+        {state.pullRequests.length > 0 && (
+          <Button onClick={() => setPage(page + 1)}>Next</Button>
+        )}
+      </Box>
+    </>
   );
 };
 
