@@ -1,4 +1,4 @@
-Simple app for showing pull request info for a GitHub repository
+Simple app for showing open pull request info for a GitHub repository
 
 ## Running locally
 
