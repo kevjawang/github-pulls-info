@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Flex, Link } from "@chakra-ui/react";
-import { IPullRequest } from "../types/GithubPull";
-import { getPull } from "../utils/rest";
+import { useSinglePullGetReq } from "../hooks/rest";
 import ErrorBox from "./ErrorBox";
 import Loading from "./Loading";
 
@@ -9,44 +8,14 @@ interface PullRequestCardProps {
   url: string;
 }
 
-interface IState {
-  loading: boolean;
-  error: boolean;
-  pullRequest: IPullRequest;
-}
-
-const defaultState = {
-  loading: true,
-  error: false,
-  pullRequest: {},
-};
-
 export const PullRequestCard = (props: PullRequestCardProps) => {
-  const [state, setState] = useState<IState>(defaultState);
+  const { data, error, loading } = useSinglePullGetReq(props.url);
 
-  useEffect(() => {
-    getPull(props.url)
-      .then((response) => {
-        setState({
-          loading: false,
-          error: false,
-          pullRequest: response.data,
-        });
-      })
-      .catch(() => {
-        setState({
-          loading: false,
-          error: true,
-          pullRequest: {},
-        });
-      });
-  }, [props.url]);
-
-  if (state.error) {
+  if (error || data === null) {
     return <ErrorBox />;
   }
 
-  if (state.loading) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -54,17 +23,17 @@ export const PullRequestCard = (props: PullRequestCardProps) => {
     <Box borderRadius="lg" borderWidth="1px" margin="4px" maxWidth="400px">
       <Flex flexDirection="column" padding="2px">
         <Box fontWeight="semibold">
-          {state.pullRequest.title}{" "}
-          <Link href={state.pullRequest.html_url} isExternal>
-            ({state.pullRequest.number})
+          {data.title}{" "}
+          <Link href={data.html_url} isExternal>
+            ({data.number})
           </Link>
         </Box>
-        <Box>Commits: {state.pullRequest.commits}</Box>
-        <Box>Comments: {state.pullRequest.comments}</Box>
+        <Box>Commits: {data.commits}</Box>
+        <Box>Comments: {data.comments}</Box>
         <Box>
           {"Opened by "}
-          <Link href={state.pullRequest.user?.html_url} isExternal>
-            {state.pullRequest.user?.login}
+          <Link href={data.user?.html_url} isExternal>
+            {data.user?.login}
           </Link>
         </Box>
       </Flex>
