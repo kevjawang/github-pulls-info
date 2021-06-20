@@ -1,8 +1,8 @@
-import React from "react";
-import { Box, Flex, Link } from "@chakra-ui/react";
-import { useSinglePullGetReq } from "../hooks/rest";
-import ErrorBox from "./ErrorBox";
-import Loading from "./Loading";
+import React from 'react';
+import { Box, Flex, Link } from '@chakra-ui/react';
+import { useSinglePullGetReq } from '../hooks/rest';
+import ErrorBox from './ErrorBox';
+import Loading from './Loading';
 
 interface PullRequestCardProps {
   url: string;
@@ -23,7 +23,7 @@ export const PullRequestCard = (props: PullRequestCardProps) => {
     <Box borderRadius="lg" borderWidth="1px" margin="4px" maxWidth="400px">
       <Flex flexDirection="column" padding="2px">
         <Box fontWeight="semibold">
-          {data.title}{" "}
+          {data.title}{' '}
           <Link href={data.html_url} isExternal>
             ({data.number})
           </Link>
@@ -31,7 +31,7 @@ export const PullRequestCard = (props: PullRequestCardProps) => {
         <Box>Commits: {data.commits}</Box>
         <Box>Comments: {data.comments}</Box>
         <Box>
-          {"Opened by "}
+          {'Opened by '}
           <Link href={data.user?.html_url} isExternal>
             {data.user?.login}
           </Link>

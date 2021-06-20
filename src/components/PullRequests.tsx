@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import PullRequestCard from "./PullRequestCard";
-import { usePullListGetReq } from "../hooks/rest";
-import { Button, SimpleGrid } from "@chakra-ui/react";
-import ErrorBox from "./ErrorBox";
-import Loading from "./Loading";
+import React, { useEffect, useState } from 'react';
+import PullRequestCard from './PullRequestCard';
+import { usePullListGetReq } from '../hooks/rest';
+import { Button, SimpleGrid } from '@chakra-ui/react';
+import ErrorBox from './ErrorBox';
+import Loading from './Loading';
 
-import { Box } from "@chakra-ui/react";
+import { Box } from '@chakra-ui/react';
 
 interface PullRequestsProps {
   url: string;

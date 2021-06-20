@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Box, Button, FormControl, Input, Text } from "@chakra-ui/react";
-import PullRequests from "./components/PullRequests";
-import { repoRegex } from "./utils/regex";
+import React, { useState } from 'react';
+import { Box, Button, FormControl, Input, Text } from '@chakra-ui/react';
+import PullRequests from './components/PullRequests';
+import { repoRegex } from './utils/regex';
 
 const Home = () => {
-  const [formURL, setFormURL] = useState("");
-  const [repoURL, setRepoURL] = useState("");
+  const [formURL, setFormURL] = useState('');
+  const [repoURL, setRepoURL] = useState('');
   const [showPulls, setShowPulls] = useState(false);
   const [showError, setShowError] = useState(false);
 

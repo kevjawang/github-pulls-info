@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { IPullRequest } from "../types/GithubPull";
-import { repoRegex, pullAPIRegex } from "../utils/regex";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { IPullRequest } from '../types/GithubPull';
+import { repoRegex, pullAPIRegex } from '../utils/regex';
 
 export const usePullListGetReq = (url: string, page: number) => {
   const [data, setData] = useState<IPullRequest[]>([]);
