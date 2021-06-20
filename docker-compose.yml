@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  github-pulls-info:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: github-pulls-info
+    volumes:
+      - .:/app
+      - app/node_modules
+    ports:
+      - 3000:3000
